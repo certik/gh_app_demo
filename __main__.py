@@ -59,6 +59,11 @@ async def get_installation_access_token(gh, jwt, installation_id):
 
 
 async def main():
+    print("Determining version")
+    os.system("git describe --tags --dirty > version")
+    version = open("version").read().strip()
+    print("Version:", version)
+    return
     print("Authenticating")
     async with aiohttp.ClientSession() as session:
         app_id = os.getenv("GH_APP_ID")
@@ -85,9 +90,9 @@ async def main():
             repo = gh.repository("certik", "gh_app_demo")
 
             print("Creating a release")
-            r = repo.create_release("v0.1.16",
-                    name="test script 2",
-                    body="test",
+            r = repo.create_release(version,
+                    name="Release version %s" % version,
+                    body="",
                     draft=False)
             print("Uploading a.txt")
             f = open("a.txt")
