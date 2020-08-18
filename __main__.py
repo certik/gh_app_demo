@@ -62,10 +62,10 @@ async def main():
         app_id = os.getenv("GH_APP_ID")
 
         jwt = get_jwt(app_id)
-        gh = GitHubAPI(session, "Mariatta")
+        gh = GitHubAPI(session, "certik")
 
         try:
-            installation = await get_installation(gh, jwt, "Mariatta")
+            installation = await get_installation(gh, jwt, "certik")
 
         except ValueError as ve:
             # Raised if Mariatta did not installed the GitHub App
@@ -80,7 +80,7 @@ async def main():
             # Example, creating a GitHub issue as a GitHub App
             gh_app = GitHubAPI(session, "black_out", oauth_token=access_token["token"])
             await gh_app.post(
-                "/repos/mariatta/strange-relationship/issues",
+                "/repos/certik/gh_app_demo/issues",
                 data={
                     "title": "We got a problem 🤖",
                     "body": "Use more emoji! (I'm a GitHub App!) ",
