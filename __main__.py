@@ -91,7 +91,12 @@ async def main():
             print("Creating a release")
             r = repo.create_release(version,
                     name="Release version %s" % version,
-                    body="",
+                    body=r"""\
+Truchas binary tarball:
+
+[a.txt](a.txt)  
+[truchas-3.1.0.tar.bz2](./truchas-3.1.0.tar.bz2)
+""",
                     draft=False)
             print("Uploading a.txt")
             f = open("a.txt")
