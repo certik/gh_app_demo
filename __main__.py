@@ -1,3 +1,4 @@
+print("Loading libraries")
 import asyncio
 import os
 import time
@@ -58,6 +59,7 @@ async def get_installation_access_token(gh, jwt, installation_id):
 
 
 async def main():
+    print("Authenticating")
     async with aiohttp.ClientSession() as session:
         app_id = os.getenv("GH_APP_ID")
 
@@ -77,20 +79,26 @@ async def main():
 
             # treat access_token as if a personal access token
 
+            print("Token obtained")
             from github3 import login
             gh = login("TruchasUploader", access_token["token"])
             repo = gh.repository("certik", "gh_app_demo")
 
-            r = repo.create_release("v0.1.10",
+            print("Creating a release")
+            r = repo.create_release("v0.1.16",
                     name="test script 2",
                     body="test",
                     draft=False)
             print("Uploading a.txt")
             f = open("a.txt")
-            r.upload_asset("text/plain", "a.txt", f)
+            s = r.upload_asset("text/plain", "a.txt", f)
+            print("Uploaded:")
+            print(s.browser_download_url)
             print("Uploading bzip")
             f = open("truchas-3.1.0.tar.bz2", "rb")
-            r.upload_asset("application/x-bzip2", "truchas-3.1.0.tar.bz2", f)
+            s = r.upload_asset("application/x-bzip2", "truchas-3.1.0.tar.bz2", f)
+            print("Uploaded:")
+            print(s.browser_download_url)
 
             return
 
@@ -132,7 +140,6 @@ async def main():
             )
             print("Asset uploaded:")
             print(s["browser_download_url"])
-
 
 
 asyncio.run(main())
