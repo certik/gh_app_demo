@@ -77,6 +77,23 @@ async def main():
 
             # treat access_token as if a personal access token
 
+            from github3 import login
+            gh = login("TruchasUploader", access_token["token"])
+            repo = gh.repository("certik", "gh_app_demo")
+
+            r = repo.create_release("v0.1.10",
+                    name="test script 2",
+                    body="test",
+                    draft=False)
+            print("Uploading a.txt")
+            f = open("a.txt")
+            r.upload_asset("text/plain", "a.txt", f)
+            print("Uploading bzip")
+            f = open("truchas-3.1.0.tar.bz2", "rb")
+            r.upload_asset("application/x-bzip2", "truchas-3.1.0.tar.bz2", f)
+
+            return
+
             # Example, creating a GitHub issue as a GitHub App
             gh_app = GitHubAPI(session, "TruchasUploader", oauth_token=access_token["token"])
             s = await gh_app.post(
