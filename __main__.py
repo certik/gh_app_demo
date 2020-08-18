@@ -92,7 +92,7 @@ async def main():
             s = await gh_app.post(
                 "/repos/certik/gh_app_demo/releases",
                 data={
-                    "tag_name": "v0.1.6",
+                    "tag_name": "v0.1.8",
                     "name": "my release",
                     "body": "Use more emoji! (I'm a GitHub App! 🤖)",
                     "draft": False,
@@ -112,7 +112,8 @@ async def main():
                 },
                 data=fdata
             )
-            print("asset uploaded")
+            print("Asset uploaded:")
+            print(s["browser_download_url"])
 
 
 
