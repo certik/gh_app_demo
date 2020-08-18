@@ -101,6 +101,7 @@ async def main():
             print("release created")
 
             # https://docs.github.com/en/rest/reference/repos#upload-a-release-asset
+            # Does not work well due to https://github.com/brettcannon/gidgethub/issues/115
             assets_url = s["upload_url"]
             fdata = open("a.txt").read()
             s = await gh_app.post(
