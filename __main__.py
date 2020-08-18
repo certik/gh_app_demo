@@ -63,7 +63,6 @@ async def main():
     os.system("git describe --tags --dirty > version")
     version = open("version").read().strip()
     print("Version:", version)
-    return
     print("Authenticating")
     async with aiohttp.ClientSession() as session:
         app_id = os.getenv("GH_APP_ID")
