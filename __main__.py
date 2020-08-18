@@ -79,13 +79,27 @@ async def main():
 
             # Example, creating a GitHub issue as a GitHub App
             gh_app = GitHubAPI(session, "black_out", oauth_token=access_token["token"])
-            await gh_app.post(
+            s = await gh_app.post(
                 "/repos/certik/gh_app_demo/issues",
                 data={
                     "title": "We got a problem 🤖",
                     "body": "Use more emoji! (I'm a GitHub App!) ",
                 },
             )
+            print("issue created")
+
+            s = await gh_app.post(
+                "/repos/certik/gh_app_demo/releases",
+                data={
+                    "tag_name": "v0.1.0",
+                    "name": "my release",
+                    "body": "Use more emoji! (I'm a GitHub App! 🤖)",
+                    "draft": False,
+                },
+            )
+            print(s)
+            print("release created")
+
 
 
 asyncio.run(main())
