@@ -100,46 +100,6 @@ async def main():
             print("Uploaded:")
             print(s.browser_download_url)
 
-            return
-
-            # Example, creating a GitHub issue as a GitHub App
-            gh_app = GitHubAPI(session, "TruchasUploader", oauth_token=access_token["token"])
-            s = await gh_app.post(
-                "/repos/certik/gh_app_demo/issues",
-                data={
-                    "title": "We got a problem 🤖",
-                    "body": "Use more emoji! (I'm a GitHub App!) ",
-                },
-            )
-            print("issue created")
-
-            # https://docs.github.com/en/rest/reference/repos#create-a-release
-            s = await gh_app.post(
-                "/repos/certik/gh_app_demo/releases",
-                data={
-                    "tag_name": "v0.1.8",
-                    "name": "my release",
-                    "body": "Use more emoji! (I'm a GitHub App! 🤖)",
-                    "draft": False,
-                },
-            )
-            print("release created")
-
-            # https://docs.github.com/en/rest/reference/repos#upload-a-release-asset
-            # Does not work well due to https://github.com/brettcannon/gidgethub/issues/115
-            assets_url = s["upload_url"]
-            fdata = open("a.txt").read()
-            s = await gh_app.post(
-                assets_url,
-                url_vars={
-                    "content-length": len(fdata),
-                    "content-type": "text/plain",
-                    "name": "a.txt",
-                },
-                data=fdata
-            )
-            print("Asset uploaded:")
-            print(s["browser_download_url"])
 
 
 asyncio.run(main())
