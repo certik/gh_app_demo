@@ -78,7 +78,7 @@ async def main():
             # treat access_token as if a personal access token
 
             # Example, creating a GitHub issue as a GitHub App
-            gh_app = GitHubAPI(session, "black_out", oauth_token=access_token["token"])
+            gh_app = GitHubAPI(session, "TruchasUploader", oauth_token=access_token["token"])
             s = await gh_app.post(
                 "/repos/certik/gh_app_demo/issues",
                 data={
@@ -88,17 +88,31 @@ async def main():
             )
             print("issue created")
 
+            # https://docs.github.com/en/rest/reference/repos#create-a-release
             s = await gh_app.post(
                 "/repos/certik/gh_app_demo/releases",
                 data={
-                    "tag_name": "v0.1.0",
+                    "tag_name": "v0.1.6",
                     "name": "my release",
                     "body": "Use more emoji! (I'm a GitHub App! 🤖)",
                     "draft": False,
                 },
             )
-            print(s)
             print("release created")
+
+            # https://docs.github.com/en/rest/reference/repos#upload-a-release-asset
+            assets_url = s["upload_url"]
+            fdata = open("a.txt").read()
+            s = await gh_app.post(
+                assets_url,
+                url_vars={
+                    "content-length": len(fdata),
+                    "content-type": "text/plain",
+                    "name": "a.txt",
+                },
+                data=fdata
+            )
+            print("asset uploaded")
 
 
 
